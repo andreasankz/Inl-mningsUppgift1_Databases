@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SharedClassLibrary.Services;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -30,6 +31,9 @@ namespace UWP_App
         {
             this.InitializeComponent();
             this.Suspending += OnSuspending;
+            JsonService jsonService = new JsonService();
+
+            jsonService.WriteToFileJson().GetAwaiter(); // skapar en Jsonfile
         }
 
         /// <summary>

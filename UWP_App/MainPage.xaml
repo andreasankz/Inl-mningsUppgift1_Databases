@@ -9,20 +9,30 @@
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
     <Grid Margin="20">
-
-
-        <ListView x:Name="personList">
-            <ListView.ItemTemplate>
-                <DataTemplate>
-                    <StackPanel Orientation="Horizontal">
-                        <TextBlock Text="{Binding FirstName}" Margin="10"/>
-                        <TextBlock Text="{Binding LastName}" Margin="10"/>
-                        <TextBlock Text="{Binding Age}" Margin="10"/>
-                        <TextBlock Text="{Binding City}" Margin="10"/>
-                    </StackPanel>
-                </DataTemplate>
-            </ListView.ItemTemplate>
-        </ListView>
-
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <Grid Grid.Column="0">
+            <StackPanel Margin="10" Padding="10">
+                <Button Content="Read JsonFile" x:Name="btnReadJson" Click="btnReadJson_Click" Margin="10"/>
+                <Button Content="Read CsvFile" x:Name="btnReadCsv" Click="btnReadCsv_Click" Margin="10"/>
+                <Button Content="Read XmlFile" x:Name="btnReadXml" Click="btnReadXml_Click" Margin="10"/>
+            </StackPanel>
+        </Grid>
+        <Grid Grid.Column="1">
+            <ListView x:Name="personList" Margin="20">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="{Binding FirstName}" Margin="10"/>
+                            <TextBlock Text="{Binding LastName}" Margin="10"/>
+                            <TextBlock Text="{Binding Age}" Margin="10"/>
+                            <TextBlock Text="{Binding City}" Margin="10"/>
+                        </StackPanel>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+        </Grid>
     </Grid>
 </Page>

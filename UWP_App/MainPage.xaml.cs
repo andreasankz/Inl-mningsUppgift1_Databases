@@ -20,6 +20,9 @@ using SharedClassLibrary.Services;
 using Windows.Storage.Streams;
 using Windows.ApplicationModel;
 using System.Net.Http.Headers;
+using System.Xml.Linq;
+using System.ServiceModel.Channels;
+using Windows.UI.Xaml.Documents;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x409
 
@@ -30,36 +33,18 @@ namespace UWP_App
     /// </summary>
     public sealed partial class MainPage : Page
     {
-        //StorageFile storageFile;
-        //StorageFolder storageFolder;
-        private readonly JsonService JsonService = new JsonService();
-        private readonly CsvService CsvService = new CsvService();
-
-
-
+        
         public MainPage()
         {
             this.InitializeComponent();
-
-            //JsonService.WriteToFileJson().GetAwaiter();
-            //CreateAFileCsv().GetAwaiter();
-            //ReadFromFileCsv().GetAwaiter();
-
-
-            //ReadFromFileJson().GetAwaiter();
-            //CsvService.WriteToFileCsv().GetAwaiter();
-
-
         }
 
-
-        private async Task ReadFromFileJson()
+        private async void btnReadJson_Click(object sender, RoutedEventArgs e)
         {
+            //Skapar en jsonfile i App. Codebehind
             var picker = new Windows.Storage.Pickers.FileOpenPicker();
             picker.ViewMode = Windows.Storage.Pickers.PickerViewMode.Thumbnail;
             picker.SuggestedStartLocation = Windows.Storage.Pickers.PickerLocationId.DocumentsLibrary;
-
-
             picker.FileTypeFilter.Add(".json");
 
             StorageFile file = await picker.PickSingleFileAsync();
@@ -72,48 +57,41 @@ namespace UWP_App
 
                 personList.ItemsSource = jsonDeserialize;
             }
-            else
-            {
-                // do something
-            }
-
+           
         }
 
-        private async Task ReadFromFileCsv() // IEnumerable eller List
+        private async void btnReadCsv_Click(object sender, RoutedEventArgs e)
         {
-            CreateAFileCsv().GetAwaiter();
 
-            var picker = new Windows.Storage.Pickers.FileOpenPicker();
-            picker.ViewMode = Windows.Storage.Pickers.PickerViewMode.Thumbnail;
-            picker.SuggestedStartLocation = Windows.Storage.Pickers.PickerLocationId.DocumentsLibrary;
+            var csvFilePath = Directory.GetCurrentDirectory() + @"\CSVPersonList.csv";
+            var csvData = await File.ReadAllLinesAsync(csvFilePath);
 
-            picker.FileTypeFilter.Add(".csv");
-            StorageFile file = await picker.PickSingleFileAsync();
-
-
-
-            string texts = await FileIO.ReadTextAsync(file);
-
-            
             var parsedResult = new List<Person>();
-            
-            if(parsedResult != null)
+
+            foreach (var line in csvData)
             {
-                var records = texts.Split(',');
-                parsedResult.Add(new Person(records[0], records[1], Convert.ToInt32(records[2]),records[3]));
+                var lines = line.Split(",");
+
+                parsedResult.Add(new Person { FirstName = lines[0], LastName = lines[1], Age = Convert.ToInt32(lines[2]), City = lines[3] });
             }
             personList.ItemsSource = parsedResult;
+           
         }
 
-        private async Task CreateAFileCsv()
+        private void btnReadXml_Click(object sender, RoutedEventArgs e)
         {
-            var content = "Tomas,Bengtsson,47,Västerås";
-            var file = await KnownFolders.DocumentsLibrary.CreateFileAsync("mycsv.csv");
-            await FileIO.AppendTextAsync(file, content);
+            string XMLFilePath = Path.Combine(Package.Current.InstalledLocation.Path, "XMLPersonList.xml");
+            XDocument loadedFile = XDocument.Load(XMLFilePath);
+
+            var data = from query in loadedFile.Descendants("person")
+                       select new Person
+                       {
+                           FirstName = (string)query.Element("firstname"),
+                           LastName = (string)query.Element("lastname"),
+                           Age = (int)query.Element("age"),
+                           City = (string)query.Element("city")
+                       };
+            personList.ItemsSource = data;
         }
-
-
-
-        
     }
 }

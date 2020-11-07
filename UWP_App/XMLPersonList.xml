@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<people>
+    <person>
+        <firstname>Bengt</firstname>
+        <lastname>Bengtsson</lastname>
+        <age>32</age>
+        <city>Karlstad</city>
+    </person>
+    <person>
+        <firstname>Lars</firstname>
+        <lastname>Larsson</lastname>
+        <age>42</age>
+        <city>Örebro</city>
+    </person>
+    <person>
+        <firstname>Tilda</firstname>
+        <lastname>Johansson</lastname>
+        <age>28</age>
+        <city>Malmö</city>
+    </person>
+    <person>
+        <firstname>Hanna</firstname>
+        <lastname>Alm</lastname>
+        <age>38</age>
+        <city>Göteborg</city>
+    </person>
+</people>

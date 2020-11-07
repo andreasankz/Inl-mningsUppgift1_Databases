@@ -35,7 +35,7 @@ namespace SharedClassLibrary.Services
 
             var file = await KnownFolders.DocumentsLibrary.CreateFileAsync("myjson.json");
             await FileIO.AppendTextAsync(file, json);
-
+            
         }
     }
 }

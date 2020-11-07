@@ -132,7 +132,6 @@
   <ItemGroup>
     <Compile Include="Models\Person.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Services\CsvService.cs" />
     <Compile Include="Services\JsonService.cs" />
     <EmbeddedResource Include="Properties\SharedClassLibrary.rd.xml" />
   </ItemGroup>
